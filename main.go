@@ -26,8 +26,8 @@ func main() {
 		Flags:    []cli.Flag{},
 		Commands: []*cli.Command{
 			{
-				Name:  "test",
-				Usage: "exec test task",
+				Name:  "serve",
+				Usage: "start API server and begin work",
 				Flags: []cli.Flag{
 					&cli.BoolFlag{
 						Name:  "debug",
@@ -39,7 +39,7 @@ func main() {
 					if c.Bool("debug") {
 						appLogsLeveled.SetLevel(logging.DEBUG, "")
 					}
-					log.Info("APP_NAME. Version", appVersion)
+					Serve()
 					return nil
 				},
 			},
