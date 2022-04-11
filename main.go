@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/op/go-logging"
 	"github.com/urfave/cli/v2"
 	"os"
@@ -34,12 +35,22 @@ func main() {
 						Value: false,
 						Usage: "Enable debug logging",
 					},
+					&cli.StringFlag{
+						Name:  "port",
+						Value: "8080",
+						Usage: "Port to listen on",
+					},
 				},
 				Action: func(c *cli.Context) error {
 					if c.Bool("debug") {
 						appLogsLeveled.SetLevel(logging.DEBUG, "")
 					}
-					Serve()
+					_host := "127.0.0.1"
+					if os.Getenv("GIN_MODE") == "release" {
+						_host = ""
+					}
+					_bind := fmt.Sprintf("%s:%s", _host, c.String("port"))
+					log.Fatal(Serve(_bind))
 					return nil
 				},
 			},
